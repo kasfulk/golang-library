@@ -8,6 +8,6 @@ var e = echo.New()
 
 func BaseRoute() {
 	IndexRoutes()
-	PostRoutes()
+	BookRoutes()
 	e.Logger.Fatal(e.Start(":1323"))
 }

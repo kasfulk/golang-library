@@ -8,12 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func PostIndex(c echo.Context) error {
+func BookIndex(c echo.Context) error {
 	posts := dbFunctions.ShowBook()
 	return c.JSON(http.StatusOK, posts)
 }
 
-func PostDetail(c echo.Context) error {
+func BookDetail(c echo.Context) error {
 	id := c.Param("id")
 	post, err := dbFunctions.ShowBookDetail(id)
 	if err != nil {
@@ -27,7 +27,7 @@ func PostDetail(c echo.Context) error {
 	return c.JSON(http.StatusOK, post)
 }
 
-func PostDelete(c echo.Context) error {
+func BookDelete(c echo.Context) error {
 	id := c.Param("id")
 	RowsAffected := dbFunctions.DeleteBook(id)
 	if RowsAffected == 0 {
@@ -40,10 +40,10 @@ func PostDelete(c echo.Context) error {
 	})
 }
 
-// func PostCreate(c echo.Context) error {
+// func BookCreate(c echo.Context) error {
 
 // }
 
-// func PostUpdate(c echo.Context) error {
+// func BookUpdate(c echo.Context) error {
 
 // }
