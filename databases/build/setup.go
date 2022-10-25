@@ -30,7 +30,8 @@ func ConnectDatabase() *gorm.DB {
 
 func MigrateDatabase() {
 	var db = ConnectDatabase()
-	db.AutoMigrate(&schemas.Post{})
+	db.AutoMigrate(&schemas.Book{})
+	db.AutoMigrate(&schemas.BookCategory{})
 	var stmtManger, ok = db.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		stmtManger.Close()

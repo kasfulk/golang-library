@@ -9,13 +9,13 @@ import (
 )
 
 func PostIndex(c echo.Context) error {
-	posts := dbFunctions.ShowPost()
+	posts := dbFunctions.ShowBook()
 	return c.JSON(http.StatusOK, posts)
 }
 
 func PostDetail(c echo.Context) error {
 	id := c.Param("id")
-	post, err := dbFunctions.ShowPostDetail(id)
+	post, err := dbFunctions.ShowBookDetail(id)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.JSON(http.StatusNotFound, map[string]string{
@@ -29,7 +29,7 @@ func PostDetail(c echo.Context) error {
 
 func PostDelete(c echo.Context) error {
 	id := c.Param("id")
-	RowsAffected := dbFunctions.DeletePost(id)
+	RowsAffected := dbFunctions.DeleteBook(id)
 	if RowsAffected == 0 {
 		return c.JSON(http.StatusNotFound, map[string]string{
 			"message": "Data yang dihapus tidak ditemukan!",

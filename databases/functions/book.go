@@ -6,26 +6,26 @@ import (
 	"gorm.io/gorm"
 )
 
-func ShowPost() []schemas.Post {
-	var posts []schemas.Post
+func ShowBook() []schemas.Book {
+	var books []schemas.Book
 	var DB = build.ConnectDatabase()
-	DB.Find(&posts)
+	DB.Find(&books)
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		stmtManger.Close()
 	} else {
 		panic(stmtManger)
 	}
-	return posts
+	return books
 }
 
-func ShowPostDetail(id string) (schemas.Post, error) {
-	var post schemas.Post
+func ShowBookDetail(id string) (schemas.Book, error) {
+	var book schemas.Book
 	var DB = build.ConnectDatabase()
 	var err error
-	if err := DB.First(&post, id).Error; err != nil {
+	if err := DB.First(&book, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return post, err
+			return book, err
 		}
 	}
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
@@ -34,13 +34,13 @@ func ShowPostDetail(id string) (schemas.Post, error) {
 	} else {
 		panic(stmtManger)
 	}
-	return post, err
+	return book, err
 }
 
-func DeletePost(id string) int32 {
-	var post schemas.Post
+func DeleteBook(id string) int32 {
+	var book schemas.Book
 	var DB = build.ConnectDatabase()
-	RowsAffected := DB.Delete(&post, id).RowsAffected
+	RowsAffected := DB.Delete(&book, id).RowsAffected
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		stmtManger.Close()
