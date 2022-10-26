@@ -3,7 +3,7 @@ package build
 import (
 	"os"
 
-	"github.com/kasfulk/golang-echo-mysql/databases/schemas"
+	"github.com/kasfulk/golang-library/databases/schemas"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

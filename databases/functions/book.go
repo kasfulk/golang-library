@@ -1,8 +1,8 @@
 package functions
 
 import (
-	"github.com/kasfulk/golang-echo-mysql/databases/build"
-	"github.com/kasfulk/golang-echo-mysql/databases/schemas"
+	"github.com/kasfulk/golang-library/databases/build"
+	"github.com/kasfulk/golang-library/databases/schemas"
 	"gorm.io/gorm"
 )
 
@@ -48,4 +48,30 @@ func DeleteBook(id string) int32 {
 		panic(stmtManger)
 	}
 	return int32(RowsAffected)
+}
+
+func CreateBook(schema *schemas.Book) error {
+	var DB = build.ConnectDatabase()
+	err := DB.Create(schema).Error
+	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
+	if ok {
+		defer stmtManger.Close()
+	}
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func UpdateBook(id string, schema *schemas.Book) error {
+	var DB = build.ConnectDatabase()
+	err := DB.Where("id = ?", id).Create(schema).Error
+	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
+	if ok {
+		defer stmtManger.Close()
+	}
+	if err != nil {
+		return err
+	}
+	return err
 }

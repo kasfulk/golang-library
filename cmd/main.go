@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"github.com/kasfulk/golang-echo-mysql/databases/build"
-	"github.com/kasfulk/golang-echo-mysql/routes"
+	"github.com/kasfulk/golang-library/databases/build"
+	"github.com/kasfulk/golang-library/routes"
 )
 
 func main() {

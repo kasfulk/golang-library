@@ -1,4 +1,4 @@
-module github.com/kasfulk/golang-echo-mysql
+module github.com/kasfulk/golang-library
 
 go 1.19
 

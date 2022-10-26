@@ -1,12 +1,13 @@
 package routes
 
 import (
-	"github.com/kasfulk/golang-echo-mysql/handlers"
+	"github.com/kasfulk/golang-library/handlers"
 )
 
 func BookRoutes() {
 	// post route
-	e.GET("/post", handlers.BookIndex)
-	e.GET("/post/:id", handlers.BookDetail)
-	e.DELETE("/post/:id", handlers.BookDelete)
+	e.GET("/book", handlers.BookIndex)
+	e.POST("/book", handlers.BookCreate)
+	e.GET("/book/:id", handlers.BookDetail)
+	e.DELETE("/book/:id", handlers.BookDelete)
 }
