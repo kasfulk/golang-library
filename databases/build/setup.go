@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/kasfulk/golang-library/databases/schemas"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -28,10 +29,27 @@ func ConnectDatabase() *gorm.DB {
 	return db
 }
 
+func UserSeed() {
+	DB := ConnectDatabase()
+	DB.Raw("TRUNCATE TABLE user;")
+	password := []byte("Secret")
+	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	var user = schemas.User{
+		Username: "admin",
+		Password: string(hashedPassword),
+		Email:    "admin@gmail.com",
+	}
+	DB.Create(&user)
+}
+
 func MigrateDatabase() {
 	var db = ConnectDatabase()
 	db.AutoMigrate(&schemas.Book{})
-	db.AutoMigrate(&schemas.BookCategory{})
+	db.AutoMigrate(&schemas.User{})
+	UserSeed()
 	var stmtManger, ok = db.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		stmtManger.Close()

@@ -9,5 +9,6 @@ func BookRoutes() {
 	e.GET("/book", handlers.BookIndex)
 	e.POST("/book", handlers.BookCreate)
 	e.GET("/book/:id", handlers.BookDetail)
+	e.PUT("/book/:id", handlers.BookUpdate)
 	e.DELETE("/book/:id", handlers.BookDelete)
 }
