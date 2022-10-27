@@ -16,7 +16,6 @@ func BookIndex(c echo.Context) error {
 	var Redis = build.ConnectRedis()
 	redisResult, redisError := Redis.Get("books").Result()
 
-	fmt.Println("redis result : " + redisResult)
 	if redisError != nil && redisResult != "" {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"message": "Kendala pada server",
@@ -93,6 +92,25 @@ func BookCreate(c echo.Context) error {
 }
 
 func BookUpdate(c echo.Context) error {
+	id := c.Param("id")
+	book := new(schemas.Book)
+	err := c.Bind(book)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "Terdapat kesalahan dalam pengiriman data!",
+		})
+	}
+
+	if err := dbFunctions.UpdateBook(id, book); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "Terdapat kesalahan dalam pemrosesan data!",
+		})
+	}
+	return c.JSON(http.StatusOK, book)
+}
+
+func BookedBy(c echo.Context) error {
 	id := c.Param("id")
 	book := new(schemas.Book)
 	err := c.Bind(book)

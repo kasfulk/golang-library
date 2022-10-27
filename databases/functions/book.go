@@ -69,7 +69,21 @@ func CreateBook(schema *schemas.Book) error {
 
 func UpdateBook(id string, schema *schemas.Book) error {
 	var DB = build.ConnectDatabase()
-	err := DB.Where("id = ?", id).Create(schema).Error
+	err := DB.Where("id = ?", id).Updates(schema).Error
+	ReCacheBooks()
+	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
+	if ok {
+		defer stmtManger.Close()
+	}
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func BookedBy(id string, user string) error {
+	var DB = build.ConnectDatabase()
+	err := DB.Where("id = ?", id).Update("booked_by", user).Error
 	ReCacheBooks()
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {

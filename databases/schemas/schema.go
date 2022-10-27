@@ -10,7 +10,7 @@ type User struct {
 type Book struct {
 	Id         int64  `gorm:"primaryKey" json:"id"`
 	Title      string `gorm:"type:varchar(255)" json:"title"`
-	CategoryId string `gorm:"type:text" json:"category_id"`
-	BookedBy   string `gorm:"type:text" json:"booked_by"`
+	CategoryId string `gorm:"type:int" json:"category_id"`
+	BookedBy   string `gorm:"type:int" json:"booked_by"`
 	Author     string `gorm:"type:varchar(255)" json:"author"`
 }
