@@ -3,6 +3,7 @@ package build
 import (
 	"os"
 
+	"github.com/go-redis/redis/v7"
 	"github.com/kasfulk/golang-library/databases/schemas"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
@@ -22,6 +23,7 @@ func ConnectDatabase() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(ConnectionString), &gorm.Config{
 		PrepareStmt: true,
 	})
+
 	if err != nil {
 		panic(err)
 	}
@@ -29,9 +31,24 @@ func ConnectDatabase() *gorm.DB {
 	return db
 }
 
+func ConnectRedis() *redis.Client {
+	var RedisURL = os.Getenv("REDIS_URL")
+	var RedisPassword = os.Getenv("REDIS_PASSWORD")
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     RedisURL,
+		Password: RedisPassword,
+		DB:       0,
+	})
+	return rdb
+}
+
 func UserSeed() {
 	DB := ConnectDatabase()
-	DB.Raw("TRUNCATE TABLE user;")
+	errorExec := DB.Exec("TRUNCATE TABLE users").Error
+	if errorExec != nil {
+		panic(errorExec)
+	}
 	password := []byte("Secret")
 	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
 	if err != nil {

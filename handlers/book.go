@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/kasfulk/golang-library/databases/build"
 	dbFunctions "github.com/kasfulk/golang-library/databases/functions"
 	"github.com/kasfulk/golang-library/databases/schemas"
 	"github.com/labstack/echo/v4"
@@ -10,8 +13,38 @@ import (
 )
 
 func BookIndex(c echo.Context) error {
-	posts := dbFunctions.ShowBook()
-	return c.JSON(http.StatusOK, posts)
+	var Redis = build.ConnectRedis()
+	redisResult, redisError := Redis.Get("books").Result()
+
+	fmt.Println("redis result : " + redisResult)
+	if redisError != nil && redisResult != "" {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "Kendala pada server",
+			"error":   fmt.Sprintf("%v", redisError),
+		})
+	}
+
+	if redisResult == "" || redisResult == "[]" {
+		books := dbFunctions.ShowBook()
+
+		bookJson, bookByteError := json.Marshal(books)
+		if bookByteError != nil {
+			panic(bookByteError)
+		}
+		Redis.Set("books", bookJson, 0)
+		return c.JSON(http.StatusOK, books)
+	} else {
+		var resultData []schemas.Book
+		err := json.Unmarshal([]byte(redisResult), &resultData)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
+				"message": "Kendala pada server",
+				"error":   fmt.Sprintf("%v", err),
+			})
+		}
+		return c.JSON(http.StatusOK, resultData)
+	}
+
 }
 
 func BookDetail(c echo.Context) error {
