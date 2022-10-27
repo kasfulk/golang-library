@@ -1,6 +1,8 @@
 package functions
 
 import (
+	"encoding/json"
+
 	"github.com/kasfulk/golang-library/databases/build"
 	"github.com/kasfulk/golang-library/databases/schemas"
 	"gorm.io/gorm"
@@ -41,6 +43,7 @@ func DeleteBook(id string) int32 {
 	var book schemas.Book
 	var DB = build.ConnectDatabase()
 	RowsAffected := DB.Delete(&book, id).RowsAffected
+	ReCacheBooks()
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		stmtManger.Close()
@@ -53,6 +56,7 @@ func DeleteBook(id string) int32 {
 func CreateBook(schema *schemas.Book) error {
 	var DB = build.ConnectDatabase()
 	err := DB.Create(schema).Error
+	ReCacheBooks()
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		defer stmtManger.Close()
@@ -66,6 +70,7 @@ func CreateBook(schema *schemas.Book) error {
 func UpdateBook(id string, schema *schemas.Book) error {
 	var DB = build.ConnectDatabase()
 	err := DB.Where("id = ?", id).Create(schema).Error
+	ReCacheBooks()
 	var stmtManger, ok = DB.ConnPool.(*gorm.PreparedStmtDB)
 	if ok {
 		defer stmtManger.Close()
@@ -74,4 +79,16 @@ func UpdateBook(id string, schema *schemas.Book) error {
 		return err
 	}
 	return err
+}
+
+func ReCacheBooks() ([]schemas.Book, error) {
+	var Redis = build.ConnectRedis()
+	books := ShowBook()
+
+	bookJson, bookByteError := json.Marshal(books)
+	if bookByteError != nil {
+		return nil, bookByteError
+	}
+	Redis.Set("books", bookJson, 0)
+	return books, nil
 }

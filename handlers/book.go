@@ -25,13 +25,13 @@ func BookIndex(c echo.Context) error {
 	}
 
 	if redisResult == "" || redisResult == "[]" {
-		books := dbFunctions.ShowBook()
-
-		bookJson, bookByteError := json.Marshal(books)
-		if bookByteError != nil {
-			panic(bookByteError)
+		books, booksError := dbFunctions.ReCacheBooks()
+		if booksError != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
+				"message": "Kendala pada server",
+				"error":   fmt.Sprintf("%v", booksError),
+			})
 		}
-		Redis.Set("books", bookJson, 0)
 		return c.JSON(http.StatusOK, books)
 	} else {
 		var resultData []schemas.Book
