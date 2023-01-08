@@ -1,16 +1,11 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/kasfulk/golang-library/internals/routes"
+	"github.com/kasfulk/golang-library/internal/routes"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
-
+	// uncomment this if want to make auto migrate
 	// build.MigrateDatabase()
 	routes.BaseRoute()
 }

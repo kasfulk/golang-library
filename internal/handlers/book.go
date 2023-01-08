@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/kasfulk/golang-library/internals/databases/build"
-	dbFunctions "github.com/kasfulk/golang-library/internals/databases/functions"
-	"github.com/kasfulk/golang-library/internals/databases/schemas"
-	apperror "github.com/kasfulk/golang-library/internals/errors"
+	"github.com/kasfulk/golang-library/internal/databases/build"
+	dbFunctions "github.com/kasfulk/golang-library/internal/databases/functions"
+	"github.com/kasfulk/golang-library/internal/databases/schemas"
+	apperror "github.com/kasfulk/golang-library/internal/errors"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
