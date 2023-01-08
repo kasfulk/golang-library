@@ -3,8 +3,8 @@ package functions
 import (
 	"encoding/json"
 
-	"github.com/kasfulk/golang-library/databases/build"
-	"github.com/kasfulk/golang-library/databases/schemas"
+	"github.com/kasfulk/golang-library/internals/databases/build"
+	"github.com/kasfulk/golang-library/internals/databases/schemas"
 	"gorm.io/gorm"
 )
 

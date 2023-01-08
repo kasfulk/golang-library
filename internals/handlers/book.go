@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kasfulk/golang-library/databases/build"
-	dbFunctions "github.com/kasfulk/golang-library/databases/functions"
-	"github.com/kasfulk/golang-library/databases/schemas"
+	"github.com/kasfulk/golang-library/internals/databases/build"
+	dbFunctions "github.com/kasfulk/golang-library/internals/databases/functions"
+	"github.com/kasfulk/golang-library/internals/databases/schemas"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

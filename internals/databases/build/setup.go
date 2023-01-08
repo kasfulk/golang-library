@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/go-redis/redis/v7"
-	"github.com/kasfulk/golang-library/databases/schemas"
+	"github.com/kasfulk/golang-library/internals/databases/schemas"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

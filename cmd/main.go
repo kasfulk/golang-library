@@ -2,8 +2,7 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"github.com/kasfulk/golang-library/databases/build"
-	"github.com/kasfulk/golang-library/routes"
+	"github.com/kasfulk/golang-library/internals/routes"
 )
 
 func main() {
@@ -12,6 +11,6 @@ func main() {
 		panic(err)
 	}
 
-	build.MigrateDatabase()
+	// build.MigrateDatabase()
 	routes.BaseRoute()
 }

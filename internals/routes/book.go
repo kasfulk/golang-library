@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/kasfulk/golang-library/handlers"
+	"github.com/kasfulk/golang-library/internals/handlers"
 )
 
 func BookRoutes() {
